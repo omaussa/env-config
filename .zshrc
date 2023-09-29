@@ -34,34 +34,15 @@ alias top=htop
 export NOTES_FOLDER="$HOME/workspace/notes"
 alias onotes="vim $NOTES_FOLDER"
 
-# to project
-export DATA_FOLDER="$HOME/.dotfiles/data"
-export PROJECTS_FILE="$DATA_FOLDER/projects.txt"
-alias addtp="echo $(pwd) >> $PROJECTS_FILE; echo 'Done'"
-function rmfp {
-    option_index=$(cat -n "$PROJECTS_FILE" | fzf --with-nth 2 | awk '{print $1}')
-    if [ -z "$option_index" ]; then
-        echo "No option selected"
-        return
-    fi
-    new_content=$(sed "${option_index}d" "$PROJECTS_FILE")
-    echo "$new_content" > "$PROJECTS_FILE"
-}
-function pj {
-    option=$(cat "$PROJECTS_FILE" | fzf)
-    if [ -z "$option" ]; then
-        echo "No project selected"
-        return
-    fi
-    tmux neww -c "$option" -n "$option"
-}
-
 export ZSH_COMPDUMP=$ZSH/cache/.zcompdump-$HOST
 
 # missing: gcloud config and autocomplete
 # missing: pnpm stuff
 # missing: conda stuff
 # missing: bun stuff
+
+source $HOME/.dotfiles/scripts/zsh/projects.sh
+source $HOME/.dotfiles/scripts/zsh/cat.sh
 
 # load starship
 eval "$(starship init zsh)"
